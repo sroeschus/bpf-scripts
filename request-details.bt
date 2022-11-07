@@ -1,0 +1,6 @@
+#!/usr/bin/bpftrace
+
+tracepoint:io_uring:io_uring_issue_sqe
+{
+	@req[args->ctx, args->opcode, args->ret] = count()
+}
