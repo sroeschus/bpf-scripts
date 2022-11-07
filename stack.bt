@@ -1,0 +1,10 @@
+#!/usr/bin/bpftrace
+
+profile:hz:99
+/pid == $1/
+{
+  printf("%s", kstack());
+  printf("---");
+  printf("%s", ustack());
+  exit();
+}
