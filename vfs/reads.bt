@@ -1,0 +1,14 @@
+#!/usr/bin/env bpftrace
+
+#include <linux/file.h>
+#include <linux/fs.h>
+
+kprobe:vfs_read,
+kprobe:vfs_iter_read,
+kprobe:vfs_iocb_iter_read
+{
+	$file = (struct file *)arg0;
+	$fs_name = str($file->f_inode->i_sb->s_type->name);
+	@reads[$fs_name] = sum(arg2);
+}
+
